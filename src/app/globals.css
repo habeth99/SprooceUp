@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --primary-color: #44987F; /* Main color */
+  --primary-color: #3e3fb1;/*#44987F;*/ /* Main color */
   --secondary-color: #D8E4FF; /* Background color for the menu */
   --text-color: #2D2D2D; /* Main text color */
   --light-gray: #F7F7F7; /* Light gray for backgrounds */
