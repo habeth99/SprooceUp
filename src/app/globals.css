@@ -37,6 +37,6 @@ html {
 } */
 
 /* Exception for specific elements that should have different colors */
-button, select, input, a {
+/* button, select, input, a {
   color: inherit !important;
-}
+} */
