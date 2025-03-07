@@ -36,18 +36,6 @@ export default function Home() {
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      
-      // Get URL parameters first
-      const params = new URLSearchParams(window.location.search);
-      const startView = params.get('startView');
-
-      // If QR code scan and user is signed in, go straight to wash select
-      if (startView === 'selectWash' && session) {
-        setCurrentView('selectWash');
-        return;
-      }
-
-      // Otherwise, handle normal app flow
       if (!session) {
         setCurrentView('signIn');
         return;
@@ -60,9 +48,16 @@ export default function Home() {
         .eq('id', session.user.id)
         .single();
 
+      // Get URL parameters
+      const params = new URLSearchParams(window.location.search);
+      const startView = params.get('startView');
+
       if (!profile?.first_name || !profile?.last_name) {
         setIsNewUser(true);
         setCurrentView('onboarding');
+      } else if (startView === 'selectWash') {
+        setCurrentView('selectWash');
+        setProfile(profile);
       } else {
         setCurrentView('main');
         setProfile(profile);
