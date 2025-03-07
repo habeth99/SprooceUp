@@ -31,6 +31,11 @@ html {
   color-scheme: light !important;
 }
 
+button[style*="--primary-color"],
+button.text-white {
+  color: white !important;
+}
+
 /* Force all text to stay dark */
 /* * {
   color: var(--text-color) !important;
