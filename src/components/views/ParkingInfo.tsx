@@ -42,12 +42,12 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
 
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-gray-700 mb-2">Garage Floor</label>
+            <label className="block text-gray-700 mb-2">Parking Level or Lot Number</label>
             <input 
               type="text"
               value={garageFloor}
               onChange={(e) => setGarageFloor(e.target.value)}
-              placeholder="Enter garage floor number"
+              placeholder="Enter Parking level or Lotnumber"
               className="border border-gray-300 rounded-lg p-2 w-full"
               required
             />
@@ -64,13 +64,13 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
               required
             />
             <p className="text-sm text-gray-500 mt-1">
-              If there are no spot numbers, give us your best description using landmarks to help us find your car
+              If there are no spot numbers, please provide the best description of your car using nearby landmarks to help us locate it easily 
             </p>
           </div>
 
           <div>
             <h2 className="text-2xl font-semibold mb-6" style={{ color: 'var(--text-color)' }}>
-              When will you return to your car?
+              When do you expect to return to your vehicle?
             </h2>
             <select
               value={returnTime}
@@ -91,6 +91,9 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
                 </option>
               ))}
             </select>
+            <p className="text-sm text-gray-500 mt-1">
+              An estimate is fine. This just helps us optimize our scheduling
+            </p>
           </div>
         </div>
         

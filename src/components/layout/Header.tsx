@@ -31,7 +31,7 @@ export default function Header({ onMenuOpen }: HeaderProps) {
 
       <div className="flex items-center absolute left-1/2 -translate-x-1/2">
         <Image
-          src="/sproocewaterlogo.png"
+          src="/largepinlogo.png"
           alt="Sprooce Logo"
           width={35}
           height={35}
