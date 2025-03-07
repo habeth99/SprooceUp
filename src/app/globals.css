@@ -9,23 +9,34 @@
   --border-color: #E0E0E0; /* Border color */
   --background: #2D2D2D; /* Default background */
   --foreground: #171717; /* Default foreground */
-  color-scheme: light;
+  color-scheme: light !important;
 }
 
+/* Force light mode styles */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light !important;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--text-color) !important;
+  background: white !important;
   font-family: Arial, Helvetica, sans-serif;
-  color-scheme: light;
+  color-scheme: light !important;
+  -webkit-text-fill-color: var(--text-color);
 }
 
 html {
-  color-scheme: light;
+  color-scheme: light !important;
+}
+
+/* Force all text to stay dark */
+* {
+  color: var(--text-color) !important;
+}
+
+/* Exception for specific elements that should have different colors */
+button, select, input, a {
+  color: inherit !important;
 }
