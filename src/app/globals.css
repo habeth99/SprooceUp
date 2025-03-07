@@ -21,7 +21,7 @@
 
 body {
   color: var(--text-color) !important;
-  background: white !important;
+  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   color-scheme: light !important;
   -webkit-text-fill-color: var(--text-color);
@@ -32,9 +32,9 @@ html {
 }
 
 /* Force all text to stay dark */
-* {
+/* * {
   color: var(--text-color) !important;
-}
+} */
 
 /* Exception for specific elements that should have different colors */
 button, select, input, a {
