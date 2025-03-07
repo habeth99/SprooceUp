@@ -24,24 +24,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   color-scheme: light !important;
-  -webkit-text-fill-color: var(--text-color);
+  /*-webkit-text-fill-color: var(--text-color);*/
 }
 
 html {
   color-scheme: light !important;
 }
-
-button[style*="--primary-color"],
-button.text-white {
-  color: white !important;
-}
-
-/* Force all text to stay dark */
-/* * {
-  color: var(--text-color) !important;
-} */
-
-/* Exception for specific elements that should have different colors */
-/* button, select, input, a {
-  color: inherit !important;
-} */
