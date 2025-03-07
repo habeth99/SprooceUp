@@ -35,7 +35,28 @@ export default function Home() {
 
   useEffect(() => {
     const checkSession = async () => {
+      // Get URL parameters first
+      const params = new URLSearchParams(window.location.search);
+      const startView = params.get('startView');
+
+      // If this is a QR code entry, save it to localStorage
+      if (startView === 'selectWash') {
+        localStorage.setItem('intendedDestination', 'selectWash');
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
+      
+      // Check for stored destination in any tab
+      const storedDestination = localStorage.getItem('intendedDestination');
+      
+      if (session && storedDestination === 'selectWash') {
+        // Clear the stored destination
+        localStorage.removeItem('intendedDestination');
+        setCurrentView('selectWash');
+        return;
+      }
+
+      // Rest of your normal flow
       if (!session) {
         setCurrentView('signIn');
         return;
@@ -47,10 +68,6 @@ export default function Home() {
         .select('first_name, last_name')
         .eq('id', session.user.id)
         .single();
-
-      // Get URL parameters
-      const params = new URLSearchParams(window.location.search);
-      const startView = params.get('startView');
 
       if (!profile?.first_name || !profile?.last_name) {
         setIsNewUser(true);
