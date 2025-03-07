@@ -7,12 +7,12 @@ import WashSelect from "@/components/views/WashSelect";
 import CarInfo from "@/components/views/CarInfo";
 import ReviewOrder from "@/components/views/ReviewOrder";
 import AccountSettings from "@/components/views/AccountSettings";
-import Payments from "@/components/views/Payments";
 import Vehicles from "@/components/views/Vehicles";
 import SignIn from "@/components/views/SignIn";
 import UserOnboarding from "@/components/views/UserOnboarding";
-import OnboardPayment from "@/components/views/OnboardPayment";
+import VehicleOnboarding from "@/components/views/VehicleOnboarding";
 import { supabase } from "@/lib/supabase";
+import ParkingInfo from "@/components/views/ParkingInfo";
 
 interface MenuItem {
   label: string;
@@ -20,10 +20,9 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: 'Account Settings', view: 'accountSettings' },
   { label: 'Home', view: 'main' },
-  { label: 'Payment', view: 'payments' },
-  { label: 'Vehicles', view: 'vehicles' }
+  { label: 'Vehicles', view: 'vehicles' },
+  { label: 'Account Settings', view: 'accountSettings' }
 ];
 
 export default function Home() {
@@ -32,27 +31,32 @@ export default function Home() {
   const [selectedWash, setSelectedWash] = useState<string | null>(null);
   const [selectedTip, setSelectedTip] = useState<number>(0);
   const [isNewUser, setIsNewUser] = useState(false);
+  const [profile, setProfile] = useState<{ first_name: string; last_name: string } | null>(null);
 
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        // Check if user has completed profile setup
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('first_name, last_name')
-          .eq('id', session.user.id)
-          .single();
-
-        if (!profile?.first_name || !profile?.last_name) {
-          setIsNewUser(true);
-          setCurrentView('onboarding');
-        } else {
-          setCurrentView('main');
-        }
+      if (!session) {
+        setCurrentView('signIn');
+        return;
+      }
+  
+      // Check if user has completed profile setup
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('first_name, last_name')
+        .eq('id', session.user.id)
+        .single();
+  
+      if (!profile?.first_name || !profile?.last_name) {
+        setIsNewUser(true);
+        setCurrentView('onboarding');
+      } else {
+        setCurrentView('main');
+        setProfile(profile);
       }
     };
-
+  
     checkSession();
   }, []);
 
@@ -74,7 +78,9 @@ export default function Home() {
           />
         );
       case 'carInfo':
-        return <CarInfo onNext={() => setCurrentView('reviewOrder')} />;
+        return <CarInfo onNext={() => setCurrentView('parkingInfo')} />;
+      case 'parkingInfo':
+        return <ParkingInfo onNext={() => setCurrentView('reviewOrder')} />;
       case 'reviewOrder':
         return (
           <ReviewOrder 
@@ -85,19 +91,17 @@ export default function Home() {
         );
       case 'accountSettings':
         return <AccountSettings />;
-      case 'payments':
-        return <Payments />;
       case 'vehicles':
         return <Vehicles />;
       case 'signIn':
         return <SignIn onSuccess={() => setCurrentView('main')} />;
       case 'onboarding':
-        return <UserOnboarding onComplete={() => {
-          setIsNewUser(false);
-          setCurrentView('onboardPayment');
-        }} />;
-      case 'onboardPayment':
-        return <OnboardPayment 
+        return <UserOnboarding 
+          onComplete={() => setCurrentView('vehicleOnboarding')}
+          onSkip={() => setCurrentView('main')}
+        />;
+      case 'vehicleOnboarding':
+        return <VehicleOnboarding 
           onComplete={() => setCurrentView('main')}
           onSkip={() => setCurrentView('main')}
         />;
@@ -108,13 +112,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-var(--secondary-color) relative">
-      {currentView !== 'signIn' && !isNewUser && (
+      {currentView !== 'signIn' && (
         <>
           <Header onMenuOpen={() => setIsMenuOpen(true)} />
           <SideMenu 
             isOpen={isMenuOpen}
             onClose={() => setIsMenuOpen(false)}
             onMenuClick={handleMenuClick}
+            userProfile={profile}
           />
         </>
       )}

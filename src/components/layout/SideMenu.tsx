@@ -4,9 +4,13 @@ interface SideMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onMenuClick: (view: string) => void;
+  userProfile: {
+    first_name: string;
+    last_name: string;
+  } | null;
 }
 
-export default function SideMenu({ isOpen, onClose, onMenuClick }: SideMenuProps) {
+export default function SideMenu({ isOpen, onClose, onMenuClick, userProfile }: SideMenuProps) {
   return (
     <div 
       className={`fixed top-0 left-0 h-full w-80 transform transition-transform duration-300 ease-in-out z-50 ${
@@ -33,28 +37,24 @@ export default function SideMenu({ isOpen, onClose, onMenuClick }: SideMenuProps
       <div className="p-6">
         <div className="mb-8 pt-4">
           <h2 className="text-xl font-semibold" style={{ color: 'var(--text-color)' }}>
-            Example User
+            {userProfile ? `${userProfile.first_name} ${userProfile.last_name}` : 'Loading...'}
           </h2>
         </div>
 
         <div className="space-y-2">
           {[
-            { label: 'Account Settings', view: 'accountSettings' },
             { label: 'Home', view: 'main' },
-            { label: 'Payment', view: 'payments' },
-            { label: 'Vehicles', view: 'vehicles' }
-          ].map((item, index) => (
-            <div key={item.view}>
-              {index === 1 && <div className="border-t border-gray-200 my-4" />}
-              <button 
-                key={item.view}
-                className="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 font-medium"
-                style={{ color: 'var(--text-color)' }}
-                onClick={() => onMenuClick(item.view)}
-              >
-                {item.label}
-              </button>
-            </div>
+            { label: 'Vehicles', view: 'vehicles' },
+            { label: 'Account Settings', view: 'accountSettings' }
+          ].map((item) => (
+            <button 
+              key={item.view}
+              className="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 font-medium"
+              style={{ color: 'var(--text-color)' }}
+              onClick={() => onMenuClick(item.view)}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
       </div>
