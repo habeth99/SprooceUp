@@ -9,8 +9,14 @@ interface Vehicle {
   state: string;
 }
 
+interface CarInfo {
+  nickname?: string;
+  license_plate: string;
+  state: string;
+}
+
 interface CarInfoProps {
-  onNext: () => void;
+  onNext: (carInfo: CarInfo) => void;
 }
 
 export default function CarInfo({ onNext }: CarInfoProps) {
@@ -32,6 +38,21 @@ export default function CarInfo({ onNext }: CarInfoProps) {
       if (data) {
         setVehicles(data);
       }
+    }
+  };
+
+  const handleNext = () => {
+    if (selectedVehicle) {
+      onNext({
+        nickname: selectedVehicle.nickname,
+        license_plate: selectedVehicle.license_plate,
+        state: selectedVehicle.state
+      });
+    } else if (licensePlate && state) {
+      onNext({
+        license_plate: licensePlate,
+        state: state
+      });
     }
   };
 
@@ -104,7 +125,8 @@ export default function CarInfo({ onNext }: CarInfoProps) {
           <button 
             className="w-full text-white py-3 rounded-lg mt-6" 
             style={{ backgroundColor: 'var(--primary-color)' }}
-            onClick={onNext}
+            onClick={handleNext}
+            disabled={!selectedVehicle && (!licensePlate || !state)}
           >
             Next
           </button>

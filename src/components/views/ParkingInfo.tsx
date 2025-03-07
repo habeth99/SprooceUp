@@ -1,13 +1,19 @@
 'use client';
 import { useState } from 'react';
 
+interface ParkingInfo {
+  garageFloor: string;
+  parkingSpace: string;
+  returnTime: string;
+}
+
 interface ParkingInfoProps {
-  onNext: () => void;
+  onNext: (parkingInfo: ParkingInfo) => void;
 }
 
 export default function ParkingInfo({ onNext }: ParkingInfoProps) {
   const [garageFloor, setGarageFloor] = useState('');
-  const [parkingLot, setParkingLot] = useState('');
+  const [parkingSpace, setParkingSpace] = useState('');
   const [returnTime, setReturnTime] = useState('30mins');
 
   const returnTimeOptions = [
@@ -16,6 +22,16 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
     { value: '2hr', label: '2 hours' },
     { value: '3hr', label: '3 hours' },
   ];
+
+  const handleNext = () => {
+    if (garageFloor && parkingSpace) {
+      onNext({
+        garageFloor,
+        parkingSpace,
+        returnTime
+      });
+    }
+  };
 
   return (
     <div className="flex justify-center p-4">
@@ -41,8 +57,8 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
             <label className="block text-gray-700 mb-2">Parking Space Number</label>
             <input 
               type="text"
-              value={parkingLot}
-              onChange={(e) => setParkingLot(e.target.value)}
+              value={parkingSpace}
+              onChange={(e) => setParkingSpace(e.target.value)}
               placeholder="Enter parking space number"
               className="border border-gray-300 rounded-lg p-2 w-full"
               required
@@ -81,7 +97,8 @@ export default function ParkingInfo({ onNext }: ParkingInfoProps) {
         <button 
           className="w-full text-white py-3 rounded-lg" 
           style={{ backgroundColor: 'var(--primary-color)' }}
-          onClick={onNext}
+          onClick={handleNext}
+          disabled={!garageFloor || !parkingSpace}
         >
           Next
         </button>

@@ -4,9 +4,25 @@ interface ReviewOrderProps {
   selectedWash: string;
   selectedTip: number;
   onTipChange: (tip: number) => void;
+  carInfo?: {
+    nickname?: string;
+    license_plate: string;
+    state: string;
+  };
+  parkingInfo?: {
+    garageFloor: string;
+    parkingSpace: string;
+    returnTime: string;
+  };
 }
 
-export default function ReviewOrder({ selectedWash, selectedTip, onTipChange }: ReviewOrderProps) {
+export default function ReviewOrder({ 
+  selectedWash, 
+  selectedTip, 
+  onTipChange,
+  carInfo,
+  parkingInfo 
+}: ReviewOrderProps) {
   const basePrice = selectedWash === 'car' ? 20 : selectedWash === 'midSuv' ? 25 : 30;
   const total = basePrice * (1 + selectedTip / 100);
 
@@ -18,6 +34,47 @@ export default function ReviewOrder({ selectedWash, selectedTip, onTipChange }: 
         </h2>
         
         <div className="space-y-6 mb-8">
+          {/* Vehicle Information */}
+          <div className="border-b pb-4">
+            <h3 className="text-lg font-medium mb-3">Vehicle Information</h3>
+            {carInfo && (
+              <div className="space-y-2">
+                {carInfo.nickname && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Nickname</span>
+                    <span className="font-medium">{carInfo.nickname}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span className="text-gray-600">License Plate</span>
+                  <span className="font-medium">{carInfo.license_plate} ({carInfo.state})</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Parking Information */}
+          <div className="border-b pb-4">
+            <h3 className="text-lg font-medium mb-3">Parking Information</h3>
+            {parkingInfo && (
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Garage Floor</span>
+                  <span className="font-medium">{parkingInfo.garageFloor}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Parking Space</span>
+                  <span className="font-medium">{parkingInfo.parkingSpace}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Return Time</span>
+                  <span className="font-medium">{parkingInfo.returnTime}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Wash Type and Price */}
           <div className="border-b pb-4">
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Wash Type</span>
@@ -31,6 +88,7 @@ export default function ReviewOrder({ selectedWash, selectedTip, onTipChange }: 
             </div>
           </div>
 
+          {/* Tip Section */}
           <div>
             <h3 className="text-lg font-medium mb-3">Add Tip</h3>
             <div className="grid grid-cols-4 gap-3 mb-4">
@@ -52,6 +110,7 @@ export default function ReviewOrder({ selectedWash, selectedTip, onTipChange }: 
             </div>
           </div>
 
+          {/* Total */}
           <div className="border-t pt-4">
             <div className="flex justify-between text-lg font-semibold">
               <span>Total</span>

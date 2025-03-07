@@ -19,6 +19,18 @@ interface MenuItem {
   view: string;
 }
 
+interface CarInfo {
+  nickname?: string;
+  license_plate: string;
+  state: string;
+}
+
+interface ParkingInfo {
+  garageFloor: string;
+  parkingSpace: string;
+  returnTime: string;
+}
+
 const menuItems: MenuItem[] = [
   { label: 'Home', view: 'main' },
   { label: 'Vehicles', view: 'vehicles' },
@@ -32,6 +44,8 @@ export default function Home() {
   const [selectedTip, setSelectedTip] = useState<number>(0);
   const [isNewUser, setIsNewUser] = useState(false);
   const [profile, setProfile] = useState<{ first_name: string; last_name: string } | null>(null);
+  const [carInfo, setCarInfo] = useState<CarInfo | null>(null);
+  const [parkingInfo, setParkingInfo] = useState<ParkingInfo | null>(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -102,15 +116,27 @@ export default function Home() {
           />
         );
       case 'carInfo':
-        return <CarInfo onNext={() => setCurrentView('parkingInfo')} />;
+        return <CarInfo 
+          onNext={(info) => {
+            setCarInfo(info);
+            setCurrentView('parkingInfo');
+          }} 
+        />;
       case 'parkingInfo':
-        return <ParkingInfo onNext={() => setCurrentView('reviewOrder')} />;
+        return <ParkingInfo 
+          onNext={(info) => {
+            setParkingInfo(info);
+            setCurrentView('reviewOrder');
+          }} 
+        />;
       case 'reviewOrder':
         return (
           <ReviewOrder 
             selectedWash={selectedWash || ''}
             selectedTip={selectedTip}
             onTipChange={setSelectedTip}
+            carInfo={carInfo || undefined}
+            parkingInfo={parkingInfo || undefined}
           />
         );
       case 'accountSettings':
