@@ -1,4 +1,7 @@
 'use client';
+import { IoHomeOutline } from 'react-icons/io5';
+import { IoCarSportOutline } from 'react-icons/io5';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -43,16 +46,17 @@ export default function SideMenu({ isOpen, onClose, onMenuClick, userProfile }: 
 
         <div className="space-y-2">
           {[
-            { label: 'Home', view: 'main' },
-            { label: 'Vehicles', view: 'vehicles' },
-            { label: 'Account Settings', view: 'accountSettings' }
+            { label: 'Home', view: 'main', icon: <IoHomeOutline className="w-5 h-5" /> },
+            { label: 'Vehicles', view: 'vehicles', icon: <IoCarSportOutline className="w-5 h-5" /> },
+            { label: 'Account Settings', view: 'accountSettings', icon: <IoSettingsOutline className="w-5 h-5" /> }
           ].map((item) => (
             <button 
               key={item.view}
-              className="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 font-medium"
+              className="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 font-medium flex items-center gap-3"
               style={{ color: 'var(--text-color)' }}
               onClick={() => onMenuClick(item.view)}
             >
+              {item.icon}
               {item.label}
             </button>
           ))}

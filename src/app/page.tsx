@@ -4,7 +4,6 @@ import Header from "@/components/layout/Header";
 import SideMenu from "@/components/layout/SideMenu";
 import MainView from "@/components/views/MainView";
 import WashSelect from "@/components/views/WashSelect";
-import CarInfo from "@/components/views/CarInfo";
 import ReviewOrder from "@/components/views/ReviewOrder";
 import AccountSettings from "@/components/views/AccountSettings";
 import Vehicles from "@/components/views/Vehicles";
@@ -12,23 +11,14 @@ import SignIn from "@/components/views/SignIn";
 import UserOnboarding from "@/components/views/UserOnboarding";
 import VehicleOnboarding from "@/components/views/VehicleOnboarding";
 import { supabase } from "@/lib/supabase";
+import Checkout from "@/components/views/Checkout";
+import { CarInfoData, ParkingInfoData } from "@/types";
+import CarInfo from "@/components/views/CarInfo";
 import ParkingInfo from "@/components/views/ParkingInfo";
 
 interface MenuItem {
   label: string;
   view: string;
-}
-
-interface CarInfo {
-  nickname?: string;
-  license_plate: string;
-  state: string;
-}
-
-interface ParkingInfo {
-  garageFloor: string;
-  parkingSpace: string;
-  returnTime: string;
 }
 
 const menuItems: MenuItem[] = [
@@ -44,8 +34,9 @@ export default function Home() {
   const [selectedTip, setSelectedTip] = useState<number>(0);
   const [isNewUser, setIsNewUser] = useState(false);
   const [profile, setProfile] = useState<{ first_name: string; last_name: string } | null>(null);
-  const [carInfo, setCarInfo] = useState<CarInfo | null>(null);
-  const [parkingInfo, setParkingInfo] = useState<ParkingInfo | null>(null);
+  const [carInfo, setCarInfo] = useState<CarInfoData | null>(null);
+  const [parkingInfo, setParkingInfo] = useState<ParkingInfoData | null>(null);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -132,13 +123,19 @@ export default function Home() {
       case 'reviewOrder':
         return (
           <ReviewOrder 
-            selectedWash={selectedWash || ''}
-            selectedTip={selectedTip}
-            onTipChange={setSelectedTip}
-            carInfo={carInfo || undefined}
-            parkingInfo={parkingInfo || undefined}
+          selectedWash={selectedWash || ''}
+          selectedTip={selectedTip}
+          onTipChange={setSelectedTip}
+          carInfo={carInfo || undefined}
+          parkingInfo={parkingInfo || undefined}
+          onNext={(view, total) => {
+            setTotal(total); 
+            setCurrentView('checkout');
+          }}
           />
         );
+      case 'checkout':
+        return <Checkout total={total} />;
       case 'accountSettings':
         return <AccountSettings />;
       case 'vehicles':

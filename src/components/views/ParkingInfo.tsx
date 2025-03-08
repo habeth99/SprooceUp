@@ -1,15 +1,17 @@
 'use client';
 import { useState } from 'react';
+//import { ParkingInfoData } from '@/types';
+import { ParkingInfoProps } from '@/types';
 
-interface ParkingInfo {
-  garageFloor: string;
-  parkingSpace: string;
-  returnTime: string;
-}
+// interface ParkingInfo {
+//   garageFloor: string;
+//   parkingSpace: string;
+//   returnTime: string;
+// }
 
-interface ParkingInfoProps {
-  onNext: (parkingInfo: { garageFloor: string; parkingSpace: string; returnTime: string }) => void;
-}
+// interface ParkingInfoProps {
+//   onNext: (parkingInfo: { garageFloor: string; parkingSpace: string; returnTime: string }) => void;
+// }
 
 export default function ParkingInfo({ onNext }: ParkingInfoProps) {
   const [garageFloor, setGarageFloor] = useState('');

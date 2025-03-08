@@ -7,7 +7,7 @@
   --light-gray: #F7F7F7; /* Light gray for backgrounds */
   --dark-gray: #2D2D2D; /* Dark gray for text */
   --border-color: #E0E0E0; /* Border color */
-  --background: #2D2D2D; /* Default background */
+  --background: #3e3fb1;/*#2D2D2D;*/ /* Default background */
   --foreground: #171717; /* Default foreground */
   color-scheme: light !important;
 }
